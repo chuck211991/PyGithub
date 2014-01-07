@@ -1719,7 +1719,7 @@ class Repository(github.GithubObject.CompletableGithubObject):
             "GET",
             self.url + "/stats/contributors"
         )
-        if data == {}:
+        if data == {} or data == None:
             return None
         else:
             return [
