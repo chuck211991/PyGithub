@@ -1715,17 +1715,12 @@ class Repository(github.GithubObject.CompletableGithubObject):
         :calls: `GET /repos/:owner/:repo/stats/contributors <http://developer.github.com/v3/repos/statistics/#get-contributors-list-with-additions-deletions-and-commit-counts>`_
         :rtype: None or list of :class:`github.StatsContributor.StatsContributor`
         """
-        headers, data = self._requester.requestJsonAndCheck(
-            "GET",
-            self.url + "/stats/contributors"
+        return github.PaginatedList.PaginatedList(
+            github.StatsContributor.StatsContributor,
+            self._requester,
+            self.url + "/stats/contributors",
+            None
         )
-        if data == {} or data == None:
-            return None
-        else:
-            return [
-                github.StatsContributor.StatsContributor(self._requester, headers, attributes, completed=True)
-                for attributes in data
-            ]
 
     def get_stats_commit_activity(self):
         """
