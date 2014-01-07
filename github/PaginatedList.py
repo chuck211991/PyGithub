@@ -152,7 +152,7 @@ class PaginatedList(PaginatedListBase):
 
         self.__nextUrl = None
         if data == None:
-            return None
+            return []
         if len(data) > 0:
             links = self.__parseLinkHeader(headers)
             if self._reversed:
