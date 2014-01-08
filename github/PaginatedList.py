@@ -144,11 +144,17 @@ class PaginatedList(PaginatedListBase):
         return self.__nextUrl is not None
 
     def _fetchNextPage(self):
-        headers, data = self.__requester.requestJsonAndCheck(
-            "GET",
-            self.__nextUrl,
-            parameters=self.__nextParams
-        )
+        try:
+            headers, data = self.__requester.requestJsonAndCheck(
+                "GET",
+                self.__nextUrl,
+                parameters=self.__nextParams
+            )
+        except github.GithubException:
+            headers = None
+            data = None
+            import logging
+            logging.getLogger(__name__).warning("Failed to fetch page: %s" % self.__nextUrl)
 
         self.__nextUrl = None
         if data == None:
